@@ -31,6 +31,14 @@ export default {
             <label for="qEndDate">結束時間</label>
             <input type="date" id="qTitle">
         </div>
+        <vxe-button transfer>
+            <template #default>默认颜色</template>
+            <template #dropdowns>
+                <vxe-button type="text" content="下拉按钮1"></vxe-button>
+                <vxe-button type="text" content="下拉按钮2"></vxe-button>
+                <vxe-button type="text" content="下拉按钮3"></vxe-button>
+            </template>
+        </vxe-button>
     </div>
 </template>
 

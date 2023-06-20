@@ -1,47 +1,58 @@
 <script>
-// export default {
-//     components: {
+export default {
+    components: {
 
-//     },
-//     data() {
-//         return {
+    },
+    data() {
+        return {
+            tableData: [
+                { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+                { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+              ],
+            gridOptions: {
+                border: true,
+                columns: [
+                  { type: 'seq', width: 50 },
+                  { field: 'name', title: 'NName', slots: { default: 'name' } },
+                  { field: 'sex', title: 'SSex', showHeaderOverflow: true },
+                  { field: 'address', title: 'AAddress', showOverflow: true }
+                ],
+                data: [
+                  { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+                  { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+                ]
+            }
+        }
+    },
+    methods: {
 
-//         }
-//     },
-//     methods: {
+    },
+    mounted() {
 
-//     },
-//     mounted() {
-
-//     }
-// }
-import type { Header, Item } from "vue3-easy-data-table";
-
-const headers: Header[] = [
-  { text: "PLAYER", value: "player" },
-  { text: "TEAM", value: "team"},
-  { text: "NUMBER", value: "number"},
-  { text: "POSITION", value: "position"},
-  { text: "HEIGHT", value: "indicator.height"},
-  { text: "WEIGHT (lbs)", value: "indicator.weight", sortable: true},
-  { text: "LAST ATTENDED", value: "lastAttended", width: 200},
-  { text: "COUNTRY", value: "country"},
-];
-
-const items: Item[] = [
-  { player: "Stephen Curry", team: "GSW", number: 30, position: 'G', indicator: {"height": '6-2', "weight": 185}, lastAttended: "Davidson", country: "USA"},
-  { player: "Lebron James", team: "LAL", number: 6, position: 'F', indicator: {"height": '6-9', "weight": 250}, lastAttended: "St. Vincent-St. Mary HS (OH)", country: "USA"},
-  { player: "Kevin Durant", team: "BKN", number: 7, position: 'F', indicator: {"height": '6-10', "weight": 240}, lastAttended: "Texas-Austin", country: "USA"},
-  { player: "Giannis Antetokounmpo", team: "MIL", number: 34, position: 'F', indicator: {"height": '6-11', "weight": 242}, lastAttended: "Filathlitikos", country: "Greece"},
-];
+    }
+}
 </script>
 
 <template>
     <div class="home-table-wrap">
-        <EasyDataTable
-        :headers="headers"
-        :items="items"
-        />
+        <vxe-button icon="vxe-icon-add" circle></vxe-button>
+        <vxe-button status="primary" icon="vxe-icon-delete" circle></vxe-button>
+        <vxe-table :data="tableData">
+          <vxe-column type="seq" width="60"></vxe-column>
+          <vxe-column field="name" title="Namee">
+            <template #default="{ row }">
+              <span>自定义插槽模板 {{ row.name }}</span>
+            </template>
+          </vxe-column>
+          <vxe-column field="sex" title="Sexx"></vxe-column>
+          <vxe-column field="age" title="Agee"></vxe-column>
+        </vxe-table>
+
+        <vxe-grid v-bind="gridOptions">
+          <template #name="{ row }">
+            <span>自定义插槽模板 {{ row.name }}</span>
+          </template>
+        </vxe-grid>
     </div>
 </template>
 
