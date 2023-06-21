@@ -5,7 +5,9 @@ export default {
     },
     data() {
         return {
-
+            qTitleInput: "",
+            qStartInput: "",
+            qEndInput: ""
         }
     },
     methods: {
@@ -21,24 +23,17 @@ export default {
     <div class="home-search-wrap">
         <div class="search-item">
             <label for="qTitle">問卷標題</label>
-            <input type="text" id="qTitle">
+            <input type="text" v-model="qTitleInput">
         </div>
         <div class="search-item">
             <label for="qStartDate">開始時間</label>
-            <input type="date" id="qTitle">
+            <input type="date" v-model="qStartInput">
         </div>
         <div class="search-item">
             <label for="qEndDate">結束時間</label>
-            <input type="date" id="qTitle">
+            <input type="date" v-model="qEndInput">
         </div>
-        <vxe-button transfer>
-            <template #default>默认颜色</template>
-            <template #dropdowns>
-                <vxe-button type="text" content="下拉按钮1"></vxe-button>
-                <vxe-button type="text" content="下拉按钮2"></vxe-button>
-                <vxe-button type="text" content="下拉按钮3"></vxe-button>
-            </template>
-        </vxe-button>
+        
     </div>
 </template>
 

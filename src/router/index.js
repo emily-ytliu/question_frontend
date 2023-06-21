@@ -9,11 +9,6 @@ const router = createRouter({
       component: () => import("../views/FrontHome.vue")
     },
     {
-      path: '/backHome',
-      name: 'backHome',
-      component: () => import("../views/BackHome.vue")
-    },
-    {
       path: '/frontAnswer',
       name: 'frontAnswer',
       component: () => import("../views/FrontAnswer.vue")
@@ -27,6 +22,38 @@ const router = createRouter({
       path: '/frontResult',
       name: 'frontResult',
       component: () => import("../views/FrontResult.vue")
+    },
+    {
+      path: '/backHome',
+      name: 'backHome',
+      component: () => import("../views/BackHome.vue")
+    },
+    {
+      path: '/backAdmin',
+      name: 'backAdmin',
+      component: () => import("../views/BackAdmin.vue"),
+      children: [
+        {
+          // 子路由: /backAdmin/content
+          path: "content",
+          component: () => import("../components/AdminContent.vue"),
+        },
+        {
+          // 子路由: /backAdmin/question
+          path: "question",
+          component: () => import("../components/AdminQuestion.vue"),
+        },
+        {
+          // 子路由: /backAdmin/feedback
+          path: "feedback",
+          component: () => import("../components/AdminFeedback.vue"),
+        },
+        {
+          // 子路由: /backAdmin/result
+          path: "result",
+          component: () => import("../components/AdminResult.vue"),
+        },
+      ]
     },
   ]
 })
