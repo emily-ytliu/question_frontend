@@ -62,7 +62,7 @@ export default {
                 display: flex;
                 justify-content: center;
                 padding-top: 20px;
-                background-color: #ef9038;
+                background-color: var(--orange-dark);
                 .nav-item {
                     margin: 0 10px;
                     border-radius: .5rem .5rem 0 0;
@@ -74,7 +74,7 @@ export default {
                     a {
                         display: block;
                         padding: 20px 30px 15px;
-                        color: #fff;
+                        color: var(--font-light);
                     }
                 }
 
@@ -82,9 +82,9 @@ export default {
                 .question,
                 .feedback,
                 .result {
-                background-color: #fff;
+                background-color: var(--bg-light);
                     a {
-                        color: #3e241b;
+                        color: var(--font-dark);
                     }
                 }
             }

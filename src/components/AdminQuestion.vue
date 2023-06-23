@@ -1,6 +1,8 @@
 <script>
+import SelectDropdown from './SelectDropdown.vue';
 export default {
     components: {
+        SelectDropdown
     },
     data() {
         return {
@@ -23,18 +25,32 @@ export default {
                 <label for="qTitle">問題</label>
                 <input type="text" v-model="qInput">
             </div>
-            <vxe-button transfer>
-                <template #default>選項</template>
-                <template #dropdowns>
-                    <vxe-button type="text" content="單選"></vxe-button>
-                    <vxe-button type="text" content="多選"></vxe-button>
-                </template>
-            </vxe-button>
+            <div class="item">
+                <SelectDropdown />
+            </div>
+            <div class="item">
+                
+            </div>
+            
+            
         </div>
         
     </div>
 </template>
 
 <style lang="scss" scoped>
+.admin-question-wrap {
+    .question-box {
+        .item {
+            display: flex;
+            width: 480px;
+            margin: 20px auto;
 
+            label {
+                padding: 0 15px;
+                line-height: 2rem;
+            }
+        }
+    }
+}
 </style>

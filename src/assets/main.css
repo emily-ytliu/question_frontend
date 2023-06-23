@@ -1,7 +1,35 @@
+:root {
+    --grey-light: #dcdfe6;
+    --grey-dark: #9d9ea1;
+    --orange-dark: #ef9038;
+    --orange-light: #f4dac2;
+    --font-light: #fff;
+    --font-dark: #635027; 
+    --bg-light: #fff;
+}
+
 * {
+    color: var(--font-dark);
     font-family: sans-serif;
 }
 
 a {
 text-decoration: none;
 }
+
+
+input {
+    width: 60%;
+    padding: 0 10px;
+    line-height: 2rem;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    color: #665e54;
+    font-weight: 700;
+
+    &:focus {
+        outline: none;
+        border: 1px solid var(--orange-dark);
+    }
+}
+
