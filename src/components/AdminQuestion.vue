@@ -1,12 +1,16 @@
 <script>
-import SelectDropdown from './SelectDropdown.vue';
+import AdminQuestionTop from './AdminQuestionTop.vue';
+import AdminQuestionTable from './AdminQuestionTable.vue'
+import SmallBtn from './SmallBtn.vue';
 export default {
     components: {
-        SelectDropdown
+        AdminQuestionTop,
+        AdminQuestionTable, 
+        SmallBtn
     },
     data() {
         return {
-            qInput: "",
+
         }
     },
     methods: {
@@ -20,37 +24,22 @@ export default {
 
 <template>
     <div class="admin-question-wrap">
-        <div class="question-box">
-            <div class="item">
-                <label for="qTitle">問題</label>
-                <input type="text" v-model="qInput">
-            </div>
-            <div class="item">
-                <SelectDropdown />
-            </div>
-            <div class="item">
-                
-            </div>
-            
-            
+        <AdminQuestionTop />
+        <AdminQuestionTable />
+        <div class="btn-box">
+            <SmallBtn type="button" :btnText="'取消'" />
+            <SmallBtn type="button" :bgc="'var(--orange-dark)'" :color="'var(--font-light)'" :btnText="'確認'" />
         </div>
-        
     </div>
 </template>
 
 <style lang="scss" scoped>
 .admin-question-wrap {
-    .question-box {
-        .item {
-            display: flex;
-            width: 480px;
-            margin: 20px auto;
-
-            label {
-                padding: 0 15px;
-                line-height: 2rem;
-            }
-        }
+    .btn-box {
+        display: flex;
+        justify-content: space-between;
+        width: 600px;
+        margin: 0 auto;
     }
 }
 </style>

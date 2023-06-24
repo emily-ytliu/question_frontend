@@ -38,17 +38,17 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-    .home-search-wrap {
-        margin: 0 auto;
-        .search-item {
-            display: flex;
-            width: 480px;
-            margin: 20px auto;
+.home-search-wrap {
+    margin: 0 auto;
+    .search-item {
+        display: flex;
+        width: 480px;
+        margin: 20px auto;
 
-            label {
-                padding: 0 15px;
-                line-height: 2rem;
-            }
+        label {
+            padding: 0 15px;
+            line-height: 2rem;
         }
     }
+}
 </style>

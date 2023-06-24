@@ -1,8 +1,10 @@
 :root {
     --grey-light: #dcdfe6;
     --grey-dark: #9d9ea1;
+    --grey-darker: #7e7f80;
     --orange-dark: #ef9038;
     --orange-light: #f4dac2;
+    --button-hover: #f8b617;
     --font-light: #fff;
     --font-dark: #635027; 
     --bg-light: #fff;
@@ -14,12 +16,13 @@
 }
 
 a {
-text-decoration: none;
+    text-decoration: none;
 }
 
 
-input {
-    width: 60%;
+input,
+textarea {
+    width: 60%; 
     padding: 0 10px;
     line-height: 2rem;
     border: 1px solid var(--grey-light);

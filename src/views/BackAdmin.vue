@@ -29,25 +29,21 @@ export default {
     <div class="back-admin-wrap">
         <nav>
             <ul class="nav-box">
-                <li class="nav-item" :class="{'content': currentRoute === '/backAdmin/content'}">
-                    <RouterLink to="/backAdmin/content">
-                        問卷
-                    </RouterLink>
+                <li class="nav-item" 
+                    :class="{'content': currentRoute === '/backAdmin/content'}">
+                    <RouterLink to="/backAdmin/content">問卷</RouterLink>
                 </li>
-                <li class="nav-item" :class="{'question': currentRoute === '/backAdmin/question'}">
-                    <RouterLink to="/backAdmin/question">
-                        題目
-                    </RouterLink>
+                <li class="nav-item" 
+                    :class="{'question': currentRoute === '/backAdmin/question'}">
+                    <RouterLink to="/backAdmin/question">題目</RouterLink>
                 </li>
-                <li class="nav-item" :class="{'feedback': currentRoute === '/backAdmin/feedback'}">
-                    <RouterLink to="/backAdmin/feedback">
-                        回饋
-                    </RouterLink>
+                <li class="nav-item" 
+                    :class="{'feedback': currentRoute === '/backAdmin/feedback'}">
+                    <RouterLink to="/backAdmin/feedback">回饋</RouterLink>
                 </li>
-                <li class="nav-item" :class="{'result': currentRoute === '/backAdmin/result'}">
-                    <RouterLink to="/backAdmin/result">
-                        統計
-                    </RouterLink>
+                <li class="nav-item" 
+                    :class="{'result': currentRoute === '/backAdmin/result'}">
+                    <RouterLink to="/backAdmin/result">統計</RouterLink>
                 </li>
             </ul>
         </nav>
@@ -62,7 +58,8 @@ export default {
                 display: flex;
                 justify-content: center;
                 padding-top: 20px;
-                background-color: var(--orange-dark);
+                background-image: linear-gradient(to right, #f87400 0%, #f9d923 100%);
+                // background-color: var(--orange-dark);
                 .nav-item {
                     margin: 0 10px;
                     border-radius: .5rem .5rem 0 0;

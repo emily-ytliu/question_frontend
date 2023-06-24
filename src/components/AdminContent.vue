@@ -1,6 +1,8 @@
 <script>
+import SmallBtn from './SmallBtn.vue';
 export default {
     components: {
+        SmallBtn
     },
     data() {
         return {
@@ -21,27 +23,65 @@ export default {
 
 <template>
     <div class="admin-content-wrap">
-        <div class="item">
-            <label for="qTitle">問卷標題</label>
-            <input type="text" v-model="qTitleInput">
+        <div class="item-box">
+            <div class="item">
+                <label for="qTitleInput">問卷標題</label>
+                <input type="text" id="qTitleInput" 
+                v-model="qTitleInput">
+            </div>
+            <div class="item">
+                <label for="qContentInput">描述內容</label>
+                <textarea rows="3" class="content-input" id="qContentInput" v-model="qContentInput"></textarea>
+            </div>
+            <div class="item">
+                <label for="qStartInput">開始時間</label>
+                <input type="date" id="qStartInput" v-model="qStartInput">
+            </div>
+            <div class="item">
+                <label for="qEndInput">結束時間</label>
+                <input type="date" id="qEndInput"
+                v-model="qEndInput">
+            </div>
         </div>
-        <div class="item">
-            <label for="qTitle">描述內容</label>
-            <input type="text" v-model="qContentInput">
+        <div class="btn-box">
+            <SmallBtn type="button" :btnText="'取消'" />
+            <SmallBtn type="button" :bgc="'var(--orange-dark)'" :color="'var(--font-light)'" :btnText="'下一頁'" />
         </div>
-        <div class="item">
-            <label for="qStartDate">開始時間</label>
-            <input type="date" v-model="qStartInput">
-        </div>
-        <div class="item">
-            <label for="qEndDate">結束時間</label>
-            <input type="date" v-model="qEndInput">
-        </div>
-        <button>取消</button>
-        <button>下一頁</button>
     </div>
 </template>
 
 <style lang="scss" scoped>
+.admin-content-wrap {
+    width: 600px;
+    margin: 0 auto;
+    .item-box {
+        margin: 40px 0;
+        padding: 0 10px;
+        .item {
+            display: flex;
+            // justify-content: center;
+            padding-bottom: 20px;
 
+            label {
+                padding-right: 15px;
+                line-height: 2rem;
+            }
+
+            input,
+            textarea {
+                width: 479px;
+            }
+
+            .content-input {
+                padding: 7px 10px;
+                line-height: 1.3rem;
+                resize: none;
+            }
+        }
+    }
+    .btn-box {
+        display: flex;
+        justify-content: space-between;
+    }
+}
 </style>

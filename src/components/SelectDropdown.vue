@@ -33,9 +33,12 @@ export default {
 <style lang="scss" scoped>
 .select-drop {
     width: 90px;
+    position: relative;
+    
     &:hover{
         .dropdown {
             display: block;
+            position: absolute;
         }
     }
     .drop-option {
@@ -67,6 +70,7 @@ export default {
         background-color: #f9f9f9;
         box-shadow: 0px 2px 3px 0px #ccc;
         border-radius: 4px;
+
         li {
             padding: 0 10px;
             line-height: 2rem;
