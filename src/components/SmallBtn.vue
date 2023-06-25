@@ -9,6 +9,9 @@ export default {
         }
     },
     methods: {
+        goTo() {
+            this.$emit('toggleTo');
+        }
     },
     computed: {
         computedBgc() {
@@ -22,7 +25,10 @@ export default {
 
 <template>
     <div class="small-btn-wrap">
-        <button :style="{ 'background-color': computedBgc, 'color': color }">{{ btnText }}</button>
+        <button 
+            @click="goTo"
+            :style="{ 'background-color'
+            :computedBgc, 'color': color }">{{ btnText }}</button>
     </div>
 </template>
 

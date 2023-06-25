@@ -39,7 +39,7 @@ export default {
 
 <style lang="scss" scoped>
 .home-search-wrap {
-    margin: 0 auto;
+    margin: 40px auto;
     .search-item {
         display: flex;
         width: 480px;

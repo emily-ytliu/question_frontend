@@ -5,23 +5,24 @@ export default {
     },
     data() {
         return {
-            tableData: [
-                { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
-                { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-              ],
             gridOptions: {
                 border: true,
+                align: "center",
                 columns: [
                   { type: 'seq', width: 50 },
-                  { field: 'name', title: 'NName', slots: { default: 'name' } },
-                  { field: 'sex', title: 'SSex', showHeaderOverflow: true },
-                  { field: 'address', title: 'AAddress', showOverflow: true }
+                  { field: 'question', title: '問卷標題', showOverflow: true },
+                  { width: 150, field: 'status', title: '狀態', showOverflow: true },
+                  { width: 150, field: 'startDate', title: '開始時間' },
+                  { width: 150, field: 'EndDate', title: '結束時間' },
+                  { width: 50, type: '', field: '', width: 50, title: '統計' },
+                  // { field: 'name', title: 'NName', slots: { default: 'name' } },
+                  // { field: 'role', title: 'RRole', showHeaderOverflow: true },
                 ],
                 data: [
-                  { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
-                  { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+                  { id: 1, question: '中山大學資管類 72 - 購買傾向調查 #21', status: '開放中', startDate: '2021/10/01', EndDate: '2021/10/21' },
+                  { id: 2, question: '星巴克裕誠店最佳員工票選', status: '開放中', startDate: '2021/03/01', EndDate: '2021/04/01' },
                 ]
-            }
+          }
         }
     },
     methods: {
@@ -35,27 +36,18 @@ export default {
 
 <template>
     <div class="home-table-wrap">
-        <vxe-button icon="vxe-icon-add" circle></vxe-button>
-        <vxe-button status="primary" icon="vxe-icon-delete" circle></vxe-button>
-        <vxe-table :data="tableData">
-          <vxe-column type="seq" width="60"></vxe-column>
-          <vxe-column field="name" title="Namee">
-            <template #default="{ row }">
-              <span>自定义插槽模板 {{ row.name }}</span>
-            </template>
-          </vxe-column>
-          <vxe-column field="sex" title="Sexx"></vxe-column>
-          <vxe-column field="age" title="Agee"></vxe-column>
-        </vxe-table>
-
         <vxe-grid v-bind="gridOptions">
-          <template #name="{ row }">
-            <span>自定义插槽模板 {{ row.name }}</span>
-          </template>
+          <!-- <template #name="{ row }"> -->
+            <!-- <span>自定义插槽模板 {{ row.name }}</span> -->
+          <!-- </template> -->
+
+          
         </vxe-grid>
     </div>
 </template>
 
 <style lang="scss" scoped>
-
+.home-table-wrap {
+  padding: 0 60px;
+}
 </style>

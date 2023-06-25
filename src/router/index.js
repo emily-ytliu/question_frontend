@@ -5,51 +5,51 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'frontHome',
+      name: 'front-home',
       component: () => import("../views/FrontHome.vue")
     },
     {
-      path: '/frontAnswer',
-      name: 'frontAnswer',
+      path: '/front-answer',
+      name: 'front-answer',
       component: () => import("../views/FrontAnswer.vue")
     },
     {
-      path: '/frontConfirm',
-      name: 'frontConfirm',
+      path: '/front-confirm',
+      name: 'front-confirm',
       component: () => import("../views/FrontConfirm.vue")
     },
     {
-      path: '/frontResult',
-      name: 'frontResult',
+      path: '/front-result',
+      name: 'front-result',
       component: () => import("../views/FrontResult.vue")
     },
     {
-      path: '/backHome',
-      name: 'backHome',
+      path: '/back-home',
+      name: 'back-home',
       component: () => import("../views/BackHome.vue")
     },
     {
-      path: '/backAdmin',
-      name: 'backAdmin',
+      path: '/back-admin',
+      name: 'back-admin',
       component: () => import("../views/BackAdmin.vue"),
       children: [
         {
-          // 子路由: /backAdmin/content
+          // 子路由: /back-admin/content
           path: "content",
           component: () => import("../components/AdminContent.vue"),
         },
         {
-          // 子路由: /backAdmin/question
+          // 子路由: /back-admin/question
           path: "question",
           component: () => import("../components/AdminQuestion.vue"),
         },
         {
-          // 子路由: /backAdmin/feedback
+          // 子路由: /back-admin/feedback
           path: "feedback",
           component: () => import("../components/AdminFeedback.vue"),
         },
         {
-          // 子路由: /backAdmin/result
+          // 子路由: /back-admin/result
           path: "result",
           component: () => import("../components/AdminResult.vue"),
         },
