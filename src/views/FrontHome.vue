@@ -14,7 +14,7 @@ export default {
         }
     },
     methods: {
-
+        
     },
     mounted() {
 
@@ -26,7 +26,7 @@ export default {
     <div class="front-home-wrap">
         <HeaderWrap :homeTitle="'問卷 ~'"/>
         <HomeSearchWrap />
-        <HomeTableWrap />
+        <HomeTableWrap :hideColumns="['checkbox', 'edit']" />
     </div>
 </template>
 
