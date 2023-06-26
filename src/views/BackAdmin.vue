@@ -4,12 +4,14 @@ import AdminContent from "../components/AdminContent.vue"
 import AdminQuestion from "../components/AdminQuestion.vue"
 import AdminFeedback from "../components/AdminFeedback.vue"
 import AdminResult from "../components/AdminResult.vue"
+import SmallBtn from '../components/SmallBtn.vue'
 export default {
     components: {
         AdminContent,
         AdminQuestion,
         AdminFeedback,
-        AdminResult
+        AdminResult,
+        SmallBtn
     },
     data() {
         return {
@@ -46,6 +48,11 @@ export default {
                     <RouterLink to="/back-admin/result">統計</RouterLink>
                 </li>
             </ul>
+            <div class="btn-box">
+                <RouterLink to="/back-home">
+                    <SmallBtn :btnText="'首頁 Go'"/>
+                </RouterLink>
+            </div>
         </nav>
         <RouterView />
     </div>
@@ -54,6 +61,7 @@ export default {
 <style lang="scss" scoped>
     .back-admin-wrap {
         nav {
+            position: relative;
             .nav-box {
                 display: flex;
                 justify-content: center;
@@ -84,6 +92,11 @@ export default {
                         color: var(--font-dark);
                     }
                 }
+            }
+            .btn-box {
+                position: absolute;
+                top: 33px;
+                right: 40px;
             }
         }
     }

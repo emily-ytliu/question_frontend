@@ -1,5 +1,5 @@
 <script>
-import SmallBtn from './SmallBtn.vue';
+import SmallBtn from './SmallBtn.vue'
 export default {
     components: {
         SmallBtn,

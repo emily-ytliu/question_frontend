@@ -1,26 +1,46 @@
 <script>
+import { RouterLink} from 'vue-router'
 export default {
     components: {
-
     },
     data() {
         return {
             currentRoute: this.$route.path,
-            data: [
-              { id: 1, question: '中山大學資管類 72 - 購買傾向調查 #21', status: '開放中', startDate: '2021/10/01', endDate: '2021/10/21' },
-              { id: 2, question: '星巴克裕誠店最佳員工票選', status: '開放中', startDate: '2021/03/01', endDate: '2021/04/01' },
-            ]
+            tableData: [],
         }
     },
     methods: {
-      updateColumns() {
-            
+      hideCheckboxEdit() {
+          return this.currentRoute !== "/";
+      },
+      hideWrite() {
+          return this.currentRoute !== "/back-home";
       }
     },
     mounted() {
-      if(this.currentRoute === "/") {
-        this.updateColumns();
-      } 
+      // fetch 後端API
+      fetch("http://localhost:8080/get_all", {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: 'include', 
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      
+      for (let i = 0; i < data.outlineList.length; i++) {
+        this.tableData.push({
+          id: data.outlineList[i].outlineId,
+          qTitle: data.outlineList[i].title,
+          status: data.outlineList[i].status,
+          startDate: data.outlineList[i].startDate,
+          endDate: data.outlineList[i].endDate
+        });
+        
+      }
+      
+    })
     }
 }
 </script>
@@ -28,25 +48,35 @@ export default {
 <template>
     <div class="home-table-wrap">
       <vxe-table
-        :data="this.data"
+        :data="this.tableData"
         :border=true
         align="center"
         >
         <vxe-column 
           type="checkbox" 
           width="50" 
-          field="checkbox"></vxe-column>
+          field="checkbox"
+          :visible="hideCheckboxEdit()"></vxe-column>
         <vxe-column 
           type="seq" 
           width="50"></vxe-column>
         <vxe-column 
           width="80" 
           field="edit" 
-          title="編輯">
+          title="編輯"
+          :visible="hideCheckboxEdit()">
+          <RouterLink to="/back-admin/content"><vxe-button icon="vxe-icon-edit" class="edit-icon">
+          </vxe-button></RouterLink>
+        </vxe-column>
+        <vxe-column 
+          width="80" 
+          field="write" 
+          title="填寫"
+          :visible="hideWrite()">
           <vxe-button icon="vxe-icon-edit" class="edit-icon"></vxe-button>
         </vxe-column>
         <vxe-column 
-          field="question" 
+          field="qTitle" 
           title="問卷標題" 
           show-overflow></vxe-column>
         <vxe-column 

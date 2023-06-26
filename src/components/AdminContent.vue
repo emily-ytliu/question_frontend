@@ -9,14 +9,19 @@ export default {
             qTitleInput: "",
             qContentInput: "",
             qStartInput: "",
-            qEndInput: ""
+            qEndInput: "",
         }
     },
     methods: {
-
+        // 預設開始日期
+        defaultStartDate() {
+            const today = new Date();
+            const defaultDate =  today.toISOString().split("T")[0]
+            this.qStartInput = defaultDate;
+        }
     },
     mounted() {
-
+        this.defaultStartDate();
     }
 }
 </script>
@@ -33,14 +38,16 @@ export default {
                 <label for="qContentInput">描述內容</label>
                 <textarea rows="3" class="content-input" id="qContentInput" v-model="qContentInput"></textarea>
             </div>
-            <div class="item">
-                <label for="qStartInput">開始時間</label>
-                <input type="date" id="qStartInput" v-model="qStartInput">
-            </div>
-            <div class="item">
-                <label for="qEndInput">結束時間</label>
-                <input type="date" id="qEndInput"
-                v-model="qEndInput">
+            <div class="date-box">
+                <div class="item">
+                    <label for="qStartInput">開始時間</label>
+                    <input type="date" id="qStartInput" v-model="qStartInput">
+                </div>
+                <div class="item">
+                    <label for="qEndInput">結束時間</label>
+                    <input type="date" id="qEndInput"
+                    v-model="qEndInput">
+                </div>
             </div>
         </div>
         <div class="btn-box">
@@ -57,6 +64,22 @@ export default {
     .item-box {
         margin: 40px 0;
         padding: 0 10px;
+
+        .date-box {
+            display: flex;
+            justify-content: space-between;
+            .item {
+                width: 48%;
+
+                label {
+                    width: 173px;
+                }
+
+                input {
+
+                }
+            }
+        }
         .item {
             display: flex;
             // justify-content: center;
