@@ -14,14 +14,72 @@ export default {
     },
     methods: {
         // 預設開始日期
-        defaultStartDate() {
+        defaultDate() {
             const today = new Date();
-            const defaultDate =  today.toISOString().split("T")[0]
-            this.qStartInput = defaultDate;
+            const defaultStartDate =  today.toISOString().split("T")[0];
+
+            this.qStartInput = defaultStartDate;
+
+            const endDate = new Date(defaultStartDate);
+            endDate.setDate(endDate.getDate() + 7);
+            const defaultEndDate = endDate.toISOString().split("T")[0];
+
+            this.qEndInput = defaultEndDate;
+        },
+        // 取消按鈕 (清空所有input)
+        cancelBtn() {
+            this.qTitleInput = "";
+            this.qContentInput = "";
+            this.defaultDate();
+
+            sessionStorage.removeItem("qTitle"); 
+            sessionStorage.removeItem("qContent");
+            sessionStorage.removeItem("qStart");
+            sessionStorage.removeItem("qEnd");
+
+        },
+        // 下一頁按鈕
+        nextBtn() {
+            // 若有欄位是空
+            if (this.qTitleInput.trim() === ""
+                || this.qContentInput.trim() === ""
+                || this.qStartInput.trim() === ""
+                || this.qEndInput.trim() === "") {
+                    return this.$swal("注意!", "有欄位未填寫", "error");
+            }
+            // 如果開始時間<今天
+            let today = new Date();
+            today =  today.toISOString().split("T")[0];
+            if (this.qStartInput < today) {
+                return this.$swal("注意!", "開始時間不可早於今天", "error");
+            }
+
+            // 如果結束時間<開始時間
+            if (this.qEndInput < this.qStartInput) {
+                return this.$swal("注意!", "結束時間不可早於開始時間", "error");
+            }
+
+            // 暫存在前端sessionStorage
+            sessionStorage.setItem("qTitle", this.qTitleInput);
+            sessionStorage.setItem("qContent", this.qContentInput);
+            sessionStorage.setItem("qStart", this.qStartInput);
+            sessionStorage.setItem("qEnd", this.qEndInput);
+
+            this.$router.push("/back-admin/question")
         }
     },
     mounted() {
-        this.defaultStartDate();
+        this.defaultDate();
+
+        if (sessionStorage.getItem("qTitle") 
+            && sessionStorage.getItem("qContent")
+            && sessionStorage.getItem("qStart")
+            && sessionStorage.getItem("qEnd")) {
+                this.qTitleInput = sessionStorage.getItem("qTitle");
+                this.qContentInput = sessionStorage.getItem("qContent");
+                this.qStartInput = sessionStorage.getItem("qStart");
+                this.qEndInput = sessionStorage.getItem("qEnd");
+        }
     }
 }
 </script>
@@ -51,8 +109,8 @@ export default {
             </div>
         </div>
         <div class="btn-box">
-            <SmallBtn type="button" :btnText="'取消'" />
-            <SmallBtn type="button" :bgc="'var(--orange-dark)'" :color="'var(--font-light)'" :btnText="'下一頁'" />
+            <SmallBtn type="button" @click="cancelBtn" :btnText="'取消'" />
+            <SmallBtn type="button" @click="nextBtn" :bgc="'var(--orange-dark)'" :color="'var(--font-light)'" :btnText="'下一頁'" />
         </div>
     </div>
 </template>
