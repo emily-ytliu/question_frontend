@@ -13,19 +13,69 @@ export default {
             typeValue: "",
         }
     },
+    computed: {
+        qInput: {
+            get() {
+                const eventBusStore = useEventBusStore();
+                return eventBusStore.qInput;
+            },
+            set() {
+
+            },
+        },
+        notNull: {
+            get() {
+                const eventBusStore = useEventBusStore();
+                return eventBusStore.notNull;
+            },
+            set() {
+
+            },
+        },
+        selector: {
+            get() {
+                const eventBusStore = useEventBusStore();
+                return eventBusStore.selector;
+            },
+            set() {
+
+            },
+        },
+        typeValue: {
+            get() {
+                const eventBusStore = useEventBusStore();
+                return eventBusStore.typeValue;
+            },
+            set() {
+
+            },
+        },
+    },
     methods: {
+        // 下拉選單組件的值
         fromInside(option) {
             this.typeValue = option;
         },
         goToTable() {
+            // Pinia
             const eventBusStore = useEventBusStore();
+            // 調用Pinia定義的方法
             eventBusStore.addToTableData ({
-                // id: eventBusStore.tableData.length,
                 question: this.qInput,
                 type: this.typeValue,
                 notNull: this.notNull ? "V" : "X",
             });
+            // 包裝在 $nextTick 的回調函數中，確保在 DOM 更新完成後才執行
+            this.$nextTick(() => {
+                this.clearInput();
+            });
         },
+        clearInput() {
+            this.qInput = "";
+            this.notNull = false;
+            this.selector = "";
+            this.typeValue = "";
+        }
     },
     mounted() {
         

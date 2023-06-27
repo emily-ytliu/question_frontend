@@ -6,19 +6,40 @@ export default {
     data() {
         return {
           internalTableData: [],
+          buttons: [],  // 放入edit-btn的index
         }
     },
-    methods: {
-    },
     computed: {
+      // TopData傳遞到Table
       tableData() {
         const eventBusStore = useEventBusStore();
         return eventBusStore.tableData;
-      }
+      },
+      // 生成編輯按鈕的同時，添加index到buttons
+      generatedButtons() {
+        return this.buttons.map((button, index) => ({
+          index: index,
+        }));
+      },
+    },
+    methods: {
+      handleBtnClick(index) {
+        const eventBusStore = useEventBusStore();
+        const tableData = this.tableData;
+        // 調用Pinia定義的方法
+        eventBusStore.setTopData(tableData);
+      },
+      // 添加新按鈕
+      addEditBtn() {
+        this.buttons.push({});
+      },
     },
     mounted() {
+      // TopData傳遞到Table
       this.internalTableData = this.tableData;
       console.log(this.internalTableData)
+      // 添加新按鈕 
+      this.addEditBtn();
     }
 }
 </script>
@@ -57,7 +78,12 @@ export default {
       <vxe-table-column
         width="80"
         title="編輯">
-          <vxe-button icon="vxe-icon-edit" class="edit-icon"></vxe-button>
+          <vxe-button 
+          icon="vxe-icon-edit" 
+          class="edit-icon" 
+          v-for="(button, index) in buttons" 
+          :key="index" 
+          @click="handleBtnClick(index)"></vxe-button>
       </vxe-table-column>
     </vxe-table>
     </div>
