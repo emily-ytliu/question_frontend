@@ -1,21 +1,34 @@
 <script>
-import SelectDropdown from './SelectDropdown.vue';
+import { useEventBusStore } from '../stores/eventBus'
+import SelectDropdown from './SelectDropdown.vue'
 export default {
     components: {
-        SelectDropdown
+        SelectDropdown,
     },
     data() {
         return {
             qInput: "",
-            notNull: "",
+            notNull: false,
             selector: "",
+            typeValue: "",
         }
     },
     methods: {
-
+        fromInside(option) {
+            this.typeValue = option;
+        },
+        goToTable() {
+            const eventBusStore = useEventBusStore();
+            eventBusStore.addToTableData ({
+                // id: eventBusStore.tableData.length,
+                question: this.qInput,
+                type: this.typeValue,
+                notNull: this.notNull ? "V" : "X",
+            });
+        },
     },
     mounted() {
-
+        
     }
 }
 </script>
@@ -36,7 +49,8 @@ export default {
             </div>
             <div class="group group-box-2">
                 <div class="item">
-                    <SelectDropdown />
+                    <SelectDropdown 
+                        @toOutside="fromInside"/>
                 </div>
                 <div class="item selector-box">
                     <label for="selector">選項</label>
@@ -47,9 +61,8 @@ export default {
                     <p>( 多個選項用 ; 分隔 )</p>
                 </div>
             </div>         
-            <button type="button">新增問題</button>
+            <button type="button" @click="goToTable">新增問題</button>
         </div>
-        
     </div>
 </template>
 

@@ -1,27 +1,35 @@
 <script>
+import { useEventBusStore } from '../stores/eventBus'
 export default {
     components: {
     },
     data() {
         return {
-            data: [
-                { id: 1, question: '喜歡的顏色?', select: '單選', notNull: 'V' },
-                { id: 2, question: '討厭的食物?', select: '多選', notNull: 'X' },
-            ]
+          internalTableData: [],
         }
     },
     methods: {
     },
+    computed: {
+      tableData() {
+        const eventBusStore = useEventBusStore();
+        return eventBusStore.tableData;
+      }
+    },
     mounted() {
-        
+      this.internalTableData = this.tableData;
+      console.log(this.internalTableData)
     }
 }
 </script>
 
 <template>
     <div class="admin-question-table-wrap">
+      <div class="btn-box">
+        <vxe-button icon="vxe-icon-delete" circle></vxe-button>
+      </div>
       <vxe-table
-        :data="this.data"
+        :data="this.internalTableData"
         :border=true
         header-align="center"
         align="center">
@@ -38,8 +46,8 @@ export default {
         align="left"
         header-align="center"></vxe-table-column>
       <vxe-table-column
-        field="select"
-        title="選項"
+        field="type"
+        title="題型"
         show-overflow
         width="80"></vxe-table-column>
       <vxe-table-column
@@ -58,6 +66,9 @@ export default {
 <style lang="scss" scoped>
 .admin-question-table-wrap {
     padding: 0 180px;
+    .btn-box {
+        padding: 10px 8px;
+    }
     .edit-icon {
         border: none;
     }

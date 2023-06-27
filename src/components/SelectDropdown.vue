@@ -10,7 +10,8 @@ export default {
     methods: {
         selectOption(option) {
             this.select = option;
-        }
+            this.$emit("toOutside", this.select)
+        },
     },
     mounted() {
 
