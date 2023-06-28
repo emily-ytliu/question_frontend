@@ -14,60 +14,39 @@ export default {
         }
     },
     computed: {
-        qInput: {
-            get() {
-                const eventBusStore = useEventBusStore();
-                return eventBusStore.qInput;
-            },
-            set() {
-
-            },
-        },
-        notNull: {
-            get() {
-                const eventBusStore = useEventBusStore();
-                return eventBusStore.notNull;
-            },
-            set() {
-
-            },
-        },
-        selector: {
-            get() {
-                const eventBusStore = useEventBusStore();
-                return eventBusStore.selector;
-            },
-            set() {
-
-            },
-        },
-        typeValue: {
-            get() {
-                const eventBusStore = useEventBusStore();
-                return eventBusStore.typeValue;
-            },
-            set() {
-
-            },
-        },
+        // 2. eidtBtn傳到Top
+        topData() {
+            // Pinia
+            const eventBusStore = useEventBusStore();
+            return {
+                newTopData: eventBusStore.newTopData, selector: eventBusStore.selector
+            };
+        }
     },
     methods: {
         // 下拉選單組件的值
         fromInside(option) {
             this.typeValue = option;
         },
+        // 1. Top傳到Table
         goToTable() {
+            // 要補防呆
+
             // Pinia
+            const selectorData = this.selector;
             const eventBusStore = useEventBusStore();
             // 調用Pinia定義的方法
+            eventBusStore.setSelector(selectorData)
+            // console.log(eventBusStore.selector)
             eventBusStore.addToTableData ({
                 question: this.qInput,
                 type: this.typeValue,
                 notNull: this.notNull ? "V" : "X",
+                selector: this.selector,
             });
             // 包裝在 $nextTick 的回調函數中，確保在 DOM 更新完成後才執行
             this.$nextTick(() => {
-                this.clearInput();
+                // this.clearInput();
             });
         },
         clearInput() {
@@ -77,8 +56,12 @@ export default {
             this.typeValue = "";
         }
     },
-    mounted() {
+    created() {
+        this.$nextTick(() => {
+            console.log(this.topData);
+        });
         
+        // this.topData;
     }
 }
 </script>

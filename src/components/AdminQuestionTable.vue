@@ -10,7 +10,7 @@ export default {
         }
     },
     computed: {
-      // TopData傳遞到Table
+      // 1. Top傳到Table
       tableData() {
         const eventBusStore = useEventBusStore();
         return eventBusStore.tableData;
@@ -23,21 +23,30 @@ export default {
       },
     },
     methods: {
+      // 2. eidtBtn傳到Top
       handleBtnClick(index) {
         const eventBusStore = useEventBusStore();
-        const tableData = this.tableData;
+        const tableData = eventBusStore.tableData;
+        const selectorData = eventBusStore.selector;
         // 調用Pinia定義的方法
-        eventBusStore.setTopData(tableData);
+        eventBusStore.editBtnToTopData({ 
+          tableData,
+          selectorData
+        });
       },
       // 添加新按鈕
       addEditBtn() {
         this.buttons.push({});
       },
     },
-    mounted() {
-      // TopData傳遞到Table
+    created() {
+      // 1. Top傳到Table
       this.internalTableData = this.tableData;
-      console.log(this.internalTableData)
+      
+      this.$nextTick(() => {
+        console.log(this.internalTableData)
+      });
+      
       // 添加新按鈕 
       this.addEditBtn();
     }
