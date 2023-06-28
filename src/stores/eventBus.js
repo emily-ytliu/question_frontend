@@ -7,6 +7,7 @@ export const useEventBusStore = defineStore('eventBus', {
         selector: [],
 
         newTopData: [],
+        selectedBtnData: null,
     }),
     getters: {
 
@@ -20,10 +21,8 @@ export const useEventBusStore = defineStore('eventBus', {
         setSelector(selectorData) {
             this.selector.push(selectorData);
         },
-        // 2. eidtBtn傳到Top
-        editBtnToTopData(fromTableData, selectorData) {
-            this.newTopData.push(fromTableData);
-            this.selector.push(selectorData);
-        },
+        setSelectedBtnData(selectedBtnData) {
+            this.selectedBtnData = selectedBtnData;
+        }
     }
 })

@@ -14,14 +14,13 @@ export default {
         }
     },
     computed: {
-        // 2. eidtBtn傳到Top
+        // 2. editBtn傳到Top
         topData() {
             // Pinia
             const eventBusStore = useEventBusStore();
-            return {
-                newTopData: eventBusStore.newTopData, selector: eventBusStore.selector
-            };
-        }
+            // return eventBusStore.selectedBtnData;
+            return eventBusStore.newTopData;
+        },
     },
     methods: {
         // 下拉選單組件的值
@@ -54,14 +53,21 @@ export default {
             this.notNull = false;
             this.selector = "";
             this.typeValue = "";
+        },
+        // 2. editBtn傳到Top
+        editTop(index) {
+            this.qInput = this.topData[index].question;
+            this.notNull = this.topData[index].notNull;
+            this.selector = this.topData[index].selector;
+            this.typeValue = this.topData[index].type;
         }
     },
-    created() {
+    mounted() {
         this.$nextTick(() => {
             console.log(this.topData);
         });
         
-        // this.topData;
+        
     }
 }
 </script>

@@ -7,6 +7,7 @@ export default {
         return {
           internalTableData: [],
           buttons: [],  // 放入edit-btn的index
+          selectedBtnIndex: null,
         }
     },
     computed: {
@@ -23,32 +24,32 @@ export default {
       },
     },
     methods: {
-      // 2. eidtBtn傳到Top
+      // 2. editBtn傳到Top
       handleBtnClick(index) {
         const eventBusStore = useEventBusStore();
-        const tableData = eventBusStore.tableData;
-        const selectorData = eventBusStore.selector;
-        // 調用Pinia定義的方法
-        eventBusStore.editBtnToTopData({ 
-          tableData,
-          selectorData
-        });
+
+        eventBusStore.newTopData = this.internalTableData;
+
       },
       // 添加新按鈕
       addEditBtn() {
         this.buttons.push({});
       },
     },
-    created() {
+    mounted() {
       // 1. Top傳到Table
       this.internalTableData = this.tableData;
       
       this.$nextTick(() => {
-        console.log(this.internalTableData)
+        // console.log(this.internalTableData)
       });
       
       // 添加新按鈕 
       this.addEditBtn();
+
+      // 2. editBtn傳到Top
+      const eventBusStore = useEventBusStore();
+      eventBusStore.newTopData = this.internalTableData;
     }
 }
 </script>
