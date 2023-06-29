@@ -6,18 +6,13 @@ export const useEventBusStore = defineStore('eventBus', {
         tableData: [],
     }),
     getters: {
-        getTableData() {
-            return this.tableData;
-        },
+        
     },
     actions: {
         // 定義觸發事件的方法
         // 1. Top傳到Table
         addToTableData(topData) {
             this.tableData.push(topData);
-        },
-        setTableData(newData) {
-            this.tableData = newData;
         },
     }
 })

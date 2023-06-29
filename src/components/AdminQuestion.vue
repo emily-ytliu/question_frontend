@@ -17,6 +17,7 @@ export default {
             currentId: 1,
             updatedRowIndex: null,
             isEditing: false,
+            tableKey: 0,
         }
     },
     computed: {
@@ -44,31 +45,45 @@ export default {
             }
 
             const eventBusStore = useEventBusStore();
-
             // 將輸入的內容儲存到updatedData中
-            const updatedData = {
-                id: this.currentId++,
-                question: this.qInput,
-                type: this.typeValue,
-                notNull: this.notNull ? "V" : "X",
-                selector: this.selector,
-            };
+            let updatedData;
 
             // 3. 如果有點擊editBtn，
             // 使用row的index更新表格資料
             if (this.updatedRowIndex !== null) {
+                const originalData = eventBusStore.tableData[this.updatedRowIndex];
+                // 修改資料不更改id
+                updatedData = {
+                    id: originalData.id,
+                    question: this.qInput,
+                    type: this.typeValue,
+                    notNull: this.notNull ? "V" : "X",
+                    selector: this.selector,
+                };
                 // .splice(開始操作的index位置, 刪除的元素數量, 要新增的元素)
                 eventBusStore.tableData.splice(this.updatedRowIndex, 1, updatedData);
                 this.updatedRowIndex = null;
             } else {
                 // 如果updatedRowIndex是null，
                 // 表示此筆是新資料，直接儲存到Pinia
+                updatedData = {
+                    id: this.currentId++,
+                    question: this.qInput,
+                    type: this.typeValue,
+                    notNull: this.notNull ? "V" : "X",
+                    selector: this.selector,
+                }
                 eventBusStore.addToTableData(updatedData);
             }
 
             this.isEditing = true;
 
             this.addOrupdateBtn = this.isEditing ? "新增問題" : "確定修改";
+
+            // :key 強制重新渲染 vxe-table
+            // :key 屬性綁定到 tableKey，
+            // 透過增加 tableKey 的值來觸發 vxe-table 被卸載並重新載入
+            this.tableKey += 1;
 
             // 包裝在 $nextTick 的回調函數中，確保在 DOM 更新完成後才執行
             this.$nextTick(() => {
@@ -100,6 +115,62 @@ export default {
     },
     mounted() {   
         console.log(this.tableData);
+
+        let title = sessionStorage.getItem("qTitle");
+        let content = sessionStorage.getItem("qContent");
+        let start = sessionStorage.getItem("qStart");
+        let end = sessionStorage.getItem("qEnd");
+
+
+        let questionList = [];
+        let notNullList = [];
+        let typeList = [];
+        let selectorList = [];
+
+        for (let i = 0; i < this.tableData.length; i++) {
+            // this.tableData[i].id;
+            let question = this.tableData[i].question;
+            let notNull = this.tableData[i].notNull === "V" ? true : false;
+            let type = this.tableData[i].type;
+            let selector = this.tableData[i].selector;
+
+            questionList.push(question);
+            notNullList.push(notNull);
+            typeList.push(type);
+            selectorList.push(selector);
+        }
+
+        let strQuestionList = questionList.join(",");
+        let strNotNullList = questionList.join(",");
+        let strTypeList = questionList.join(",");
+        let strSelectorList = questionList.join(",");
+
+
+        const body = {
+            "title": title,
+            "description": content,
+            "status": "未開放",
+            "start_date": start,
+            "end_date": end,
+            "outline_id": "2",
+            "question_title": strQuestionList,
+            "not_null": strNotNullList,
+            "type": strTypeList,
+            "question_selector": strSelectorList
+        }
+
+        fetch("http://localhost:8080/log_in", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            "body": JSON.stringify(body),
+            credentials: 'include', 
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        });
     }
 }
 </script>
@@ -150,6 +221,8 @@ export default {
                 <vxe-button icon="vxe-icon-delete" circle></vxe-button>
             </div>
             <vxe-table
+                ref="table"
+                :key="tableKey"
                 :data="tableData"
                 :border=true
                 header-align="center"
