@@ -4,10 +4,6 @@ export const useEventBusStore = defineStore('eventBus', {
     state: () => ({
         // 定義需要共享的資料
         tableData: [],
-        selector: [],
-
-        newTopData: [],
-        selectedBtnData: null,
     }),
     getters: {
 
@@ -18,11 +14,5 @@ export const useEventBusStore = defineStore('eventBus', {
         addToTableData(topData) {
             this.tableData.push(topData);
         },
-        setSelector(selectorData) {
-            this.selector.push(selectorData);
-        },
-        setSelectedBtnData(selectedBtnData) {
-            this.selectedBtnData = selectedBtnData;
-        }
     }
 })
