@@ -51,7 +51,7 @@ export default {
         }
         
       })
-    }
+    },
 }
 </script>
 
@@ -115,6 +115,7 @@ export default {
 
 <style lang="scss" scoped>
 .home-table-wrap {
+  margin: 20px 0;
   padding: 0 60px;
   .hide {
     display: none;

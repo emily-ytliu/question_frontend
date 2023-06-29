@@ -28,15 +28,24 @@ export default {
         },
         // 取消按鈕 (清空所有input)
         cancelBtn() {
-            this.qTitleInput = "";
-            this.qContentInput = "";
-            this.defaultDate();
+            this.$swal({
+                title:"注意!",
+                text: "請再次確認是否清空輸入的資料",
+                icon: "warning", 
+                showCancelButton: true,
+                })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    this.qTitleInput = "";
+                    this.qContentInput = "";
+                    this.defaultDate();
 
-            sessionStorage.removeItem("qTitle"); 
-            sessionStorage.removeItem("qContent");
-            sessionStorage.removeItem("qStart");
-            sessionStorage.removeItem("qEnd");
-
+                    sessionStorage.removeItem("qTitle"); 
+                    sessionStorage.removeItem("qContent");
+                    sessionStorage.removeItem("qStart");
+                    sessionStorage.removeItem("qEnd");
+                }
+            });
         },
         // 下一頁按鈕
         nextBtn() {

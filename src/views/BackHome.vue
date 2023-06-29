@@ -2,12 +2,10 @@
 import { RouterLink} from 'vue-router'
 import HeaderWrap from "../components/Header.vue"
 import HomeSearchWrap from "../components/HomeSearchWrap.vue"
-import HomeTableWrap from "../components/HomeTableWrap.vue"
 export default {
     components: {
         HeaderWrap,
         HomeSearchWrap,
-        HomeTableWrap
     },
     data() {
         return {
@@ -27,7 +25,6 @@ export default {
     <div class="back-home-wrap">
         <HeaderWrap :homeTitle="'後台管理'" />
         <HomeSearchWrap />
-        <HomeTableWrap />
     </div>
 </template>
 

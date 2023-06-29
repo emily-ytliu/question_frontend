@@ -13,8 +13,7 @@ export default {
             selector: "",
             typeValue: "請選擇",
             // Table
-            buttons: [],  // 放入edit-btn的index
-            selectedBtnIndex: null, // 保存index用
+            currentId: 1,
         }
     },
     computed: {
@@ -39,6 +38,7 @@ export default {
             const eventBusStore = useEventBusStore();
             // 調用Pinia定義的方法
             eventBusStore.addToTableData ({
+                id: this.currentId++,
                 question: this.qInput,
                 type: this.typeValue,
                 notNull: this.notNull ? "V" : "X",
@@ -53,32 +53,20 @@ export default {
             this.qInput = "";
             this.notNull = false;
             this.selector = "";
-            this.typeValue = "";
+            this.typeValue = "請選擇";
         },
         // 2. editBtn傳到Top
-        editTop(index) {
+        handleEditBtnClick(row) {
             const eventBusStore = useEventBusStore();
-            const selectedData = eventBusStore.tableData[index];
+            console.log(row)
 
-            this.qInput = selectedData.question;
-            this.notNull = selectedData.notNull === "V" ? true : false;
-            this.selector = selectedData.selector;
-            this.typeValue = selectedData.type;
-        },
-        // Table
-        // 2. editBtn傳到Top
-        handleBtnClick(index) {
-            this.selectedBtnIndex = index;  // 使用保存的index
-            this.editTop(index);
-        },
-        // 添加新按鈕
-        addEditBtn() {
-            this.buttons.push({});
+            this.qInput = row.question;
+            this.notNull = row.notNull === "V" ? true : false;
+            this.selector = row.selector;
+            this.typeValue = row.type;
         },
     },
     created() {
-        // 添加新按鈕 
-        this.addEditBtn();
         console.log(this.tableData);
     },
     mounted() {        
@@ -88,8 +76,8 @@ export default {
 </script>
 
 <template>
-    <!-- Top -->
     <div class="admin-question-wrap">
+        <!-- Top -->
         <div class="admin-question-top-wrap">
             <div class="question-box">
                 <div class="group group-box-1">
@@ -141,7 +129,8 @@ export default {
                     type="checkbox"
                     width="50"></vxe-table-column>
                 <vxe-table-column
-                    type="seq"
+                    field="id"
+                    title="#"
                     width="50"></vxe-table-column>
                 <vxe-table-column
                     field="question"
@@ -161,12 +150,12 @@ export default {
                 <vxe-table-column
                     width="80"
                     title="編輯">
-                    <vxe-button 
-                        icon="vxe-icon-edit" 
-                        class="edit-icon" 
-                        v-for="(button, index) in buttons" 
-                        :key="index" 
-                        @click="handleBtnClick(index)"></vxe-button>
+                    <template #default="{ row }">
+                        <vxe-button 
+                            icon="vxe-icon-edit" 
+                            class="edit-icon" 
+                            @click="handleEditBtnClick(row)"></vxe-button>
+                    </template>
                 </vxe-table-column>
             </vxe-table>
         </div>
