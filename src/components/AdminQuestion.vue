@@ -12,8 +12,11 @@ export default {
             notNull: false,
             selector: "",
             typeValue: "請選擇",
+            addOrupdateBtn: "新增問題",
             // Table
             currentId: 1,
+            updatedRowIndex: null,
+            isEditing: false,
         }
     },
     computed: {
@@ -32,18 +35,41 @@ export default {
         },
         // 1. Top傳到Table
         goToTable() {
-            // 要補防呆
+            // 防呆
+            // 欄位是空
+            if (this.qInput === ""
+                || this.selector === ""
+                || this.typeValue === "請選擇") {
+                return this.$swal("注意!", "有欄位未填寫", "warning");
+            }
 
-            // Pinia
             const eventBusStore = useEventBusStore();
-            // 調用Pinia定義的方法
-            eventBusStore.addToTableData ({
+
+            // 將輸入的內容儲存到updatedData中
+            const updatedData = {
                 id: this.currentId++,
                 question: this.qInput,
                 type: this.typeValue,
                 notNull: this.notNull ? "V" : "X",
                 selector: this.selector,
-            });
+            };
+
+            // 3. 如果有點擊editBtn，
+            // 使用row的index更新表格資料
+            if (this.updatedRowIndex !== null) {
+                // .splice(開始操作的index位置, 刪除的元素數量, 要新增的元素)
+                eventBusStore.tableData.splice(this.updatedRowIndex, 1, updatedData);
+                this.updatedRowIndex = null;
+            } else {
+                // 如果updatedRowIndex是null，
+                // 表示此筆是新資料，直接儲存到Pinia
+                eventBusStore.addToTableData(updatedData);
+            }
+
+            this.isEditing = true;
+
+            this.addOrupdateBtn = this.isEditing ? "新增問題" : "確定修改";
+
             // 包裝在 $nextTick 的回調函數中，確保在 DOM 更新完成後才執行
             this.$nextTick(() => {
                 this.clearInput();
@@ -64,12 +90,15 @@ export default {
             this.notNull = row.notNull === "V" ? true : false;
             this.selector = row.selector;
             this.typeValue = row.type;
+
+            // 3. 將選擇row的index儲存
+            const rowIndex = this.tableData.indexOf(row);
+            this.updatedRowIndex = rowIndex;
+
+            this.addOrupdateBtn = "確定修改";
         },
     },
-    created() {
-        console.log(this.tableData);
-    },
-    mounted() {        
+    mounted() {   
         console.log(this.tableData);
     }
 }
@@ -112,7 +141,7 @@ export default {
                         <p>( 多個選項用 ; 分隔 )</p>
                     </div>
                 </div>         
-                <button type="button" @click="goToTable">新增問題</button>
+                <button type="button" @click="goToTable">{{ addOrupdateBtn }}</button>
             </div>
         </div>
         <!-- Table -->
@@ -171,9 +200,10 @@ export default {
 .admin-question-wrap {
     // Top
     .admin-question-top-wrap {
-        width: 50%;
-        margin: 40px auto;
+        width: 600px;
+        margin: 0 auto;
         .question-box {
+            margin: 40px 0;
             .group {
                 display: flex;
                 margin: 0 auto;
