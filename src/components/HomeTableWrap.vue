@@ -1,57 +1,102 @@
 <script>
+import { useEventBusStore } from '../stores/eventBus'
 import { RouterLink} from 'vue-router'
 export default {
-    components: {
+  components: {
+  },
+  data() {
+      return {
+          currentRoute: this.$route.path,
+          tableData: [],
+          hideBtn: false,
+          newOutlineId: 0,
+          start: "",
+          end: "",
+      }
+  },
+  computed: {
+    // updateNewOutlineId() {
+    //   // 加入newOutlineId到Pinia儲存
+    //   const eventBusStore = useEventBusStore();
+    //   eventBusStore.setNewOutlineId(this.newOutlineId);
+    //   return eventBusStore.newOutlineId;
+    // },
+  },
+  methods: {
+    hideCheckboxEdit() {
+        return this.currentRoute !== "/";
     },
-    data() {
-        return {
-            currentRoute: this.$route.path,
-            tableData: [],
-            hideBtn: false,
-        }
+    hideWrite() {
+        return this.currentRoute !== "/back-home";
     },
-    methods: {
-      hideCheckboxEdit() {
-          return this.currentRoute !== "/";
-      },
-      hideWrite() {
-          return this.currentRoute !== "/back-home";
-      },
-      hideBtns() {
-        if (this.currentRoute === "/") {
-          this.hideBtn = true;
-        }
-        else {
-          this.hideBtn = false;
-        }
+    hideBtns() {
+      if (this.currentRoute === "/") {
+        this.hideBtn = true;
+      }
+      else {
+        this.hideBtn = false;
       }
     },
-    mounted() {
-      this.hideBtns();
-      // fetch 後端API
-      fetch("http://localhost:8080/get_all", {
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: 'include', 
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        
-        for (let i = 0; i < data.outlineList.length; i++) {
-          this.tableData.push({
-            id: data.outlineList[i].outlineId,
-            qTitle: data.outlineList[i].title,
-            status: data.outlineList[i].status,
-            startDate: data.outlineList[i].startDate,
-            endDate: data.outlineList[i].endDate
-          });
-          
-        }
-        
-      })
+    updateStatus() {
+      // 用日期來判斷status
+      // 未開放、進行中、已結束 (前端判斷就好，不用存資料庫)
+      const today = new Date();
+      if (today < this.start) {
+        this.status = "未開放";
+      }
+      if (today >= this.start && today <= this.end) {
+        this.status = "進行中";
+      }
+      if (today > this.end) {
+        this.status = "已結束";
+      }
+      console.log("看status: " + this.status);
     },
+  },
+  mounted() {
+    this.hideBtns();
+    // fetch 後端API
+    fetch("http://localhost:8080/get_all", {
+      headers: {
+          "Content-Type": "application/json"
+      },
+      credentials: 'include', 
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+
+      for (let i = 0; i < data.outlineList.length; i++) {
+        // // 用日期來判斷status
+        this.start = new Date(data.outlineList[i].startDate);
+        this.end = new Date(data.outlineList[i].endDate);
+        this.updateStatus();
+
+        this.tableData.push({
+          id: data.outlineList[i].outlineId,
+          qTitle: data.outlineList[i].title,
+          status: this.status,
+          startDate: data.outlineList[i].startDate,
+          endDate: data.outlineList[i].endDate
+        });
+        
+      }
+
+      // 後台HomeTableWrap點擊新增按鈕時，
+      // 把最後一筆id+1，傳到AdminQuestion
+      if (data.outlineList.length === 0) {
+        this.newOutlineId = 1;
+      }
+      else {
+        this.newOutlineId = data.outlineList[data.outlineList.length-1].outlineId+1;
+      }
+      // 加入newOutlineId到Pinia儲存
+      const eventBusStore = useEventBusStore();
+      eventBusStore.setNewOutlineId(this.newOutlineId);
+
+      // console.log(this.newOutlineId);
+    })
+  },
 }
 </script>
 
@@ -59,7 +104,7 @@ export default {
     <div class="home-table-wrap">
       <div class="btn-box" :class="{ hide: hideBtn }">
         <vxe-button icon="vxe-icon-delete" circle></vxe-button>
-        <RouterLink to="/back-admin/content"><vxe-button icon="vxe-icon-add" circle class="add-btn"></vxe-button></RouterLink>
+        <RouterLink to="/back-admin/content"><vxe-button @click="updateNewOutlineId" icon="vxe-icon-add" circle class="add-btn"></vxe-button></RouterLink>
       </div>
       <vxe-table
         :data="this.tableData"
@@ -72,7 +117,8 @@ export default {
           field="checkbox"
           :visible="hideCheckboxEdit()"></vxe-column>
         <vxe-column 
-          type="seq" 
+          field="id"
+          title="#"
           width="50"></vxe-column>
         <vxe-column 
           width="80" 
@@ -95,7 +141,8 @@ export default {
           show-overflow></vxe-column>
         <vxe-column 
           width="80" 
-          field="status" title="狀態" 
+          field="status" 
+          title="狀態" 
           show-overflow></vxe-column>
         <vxe-column 
           width="120" 

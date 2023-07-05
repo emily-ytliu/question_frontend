@@ -18,6 +18,8 @@ export default {
             updatedRowIndex: null,
             isEditing: false,
             tableKey: 0,
+            // 後端
+            status: "",
         }
     },
     computed: {
@@ -27,6 +29,11 @@ export default {
             const eventBusStore = useEventBusStore();
             return eventBusStore.tableData;
         },
+        // 獲取outlineId
+        newOutlineId() {
+            const eventBusStore = useEventBusStore();
+            return eventBusStore.newOutlineId;
+        }
     },
     methods: {
         // Top
@@ -112,65 +119,80 @@ export default {
 
             this.addOrupdateBtn = "確定修改";
         },
+        // 儲存到資料庫
+        addToDB() {
+            let questionList = [];
+            let notNullList = [];
+            let typeList = [];
+            let selectorList = [];
+
+            for (let i = 0; i < this.tableData.length; i++) {
+                // this.tableData[i].id;
+                let question = this.tableData[i].question;
+                let notNull = this.tableData[i].notNull === "V" ? true : false;
+                let type = this.tableData[i].type;
+                let selector = this.tableData[i].selector;
+
+                questionList.push(question);
+                notNullList.push(notNull);
+                typeList.push(type);
+                selectorList.push(selector);
+            }
+
+            let strQuestionList = questionList.join(", ");
+            let strNotNullList = notNullList.join(", ");
+            let strTypeList = typeList.join(", ");
+            let strSelectorList = selectorList.join(", ");
+
+            let title = sessionStorage.getItem("qTitle");
+            let content = sessionStorage.getItem("qContent");
+
+            if (title === null || content === null) {
+                return this.$swal("注意！", "問題大綱未填寫", "warning")
+                .then(() => {
+                    this.$router.push("/back-admin/content");
+                });  
+            }
+
+            // fetch新增問卷後端
+            const body = {
+                "title": title,
+                "description": content,
+                "start_date": this.start,
+                "end_date": this.end,
+
+                "question_title": strQuestionList,
+                "not_null": strNotNullList,
+                "type": strTypeList,
+                "question_selector": strSelectorList
+            }
+            fetch("http://localhost:8080/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                "body": JSON.stringify(body),
+                credentials: 'include', 
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "資料不正確") {
+                    return this.$swal(data.message, "無法儲存", "error");  
+                }
+                if (data.message === "新增問卷成功") {
+                    console.log(data);
+
+                    this.$swal(data.message, "可以到總表查看囉！", "success")
+                    .then(() => {
+                        this.$router.push("/back-home");
+                    });  
+                }
+            });
+        }
     },
     mounted() {   
-        console.log(this.tableData);
-
-        let title = sessionStorage.getItem("qTitle");
-        let content = sessionStorage.getItem("qContent");
-        let start = sessionStorage.getItem("qStart");
-        let end = sessionStorage.getItem("qEnd");
-
-
-        let questionList = [];
-        let notNullList = [];
-        let typeList = [];
-        let selectorList = [];
-
-        for (let i = 0; i < this.tableData.length; i++) {
-            // this.tableData[i].id;
-            let question = this.tableData[i].question;
-            let notNull = this.tableData[i].notNull === "V" ? true : false;
-            let type = this.tableData[i].type;
-            let selector = this.tableData[i].selector;
-
-            questionList.push(question);
-            notNullList.push(notNull);
-            typeList.push(type);
-            selectorList.push(selector);
-        }
-
-        let strQuestionList = questionList.join(",");
-        let strNotNullList = questionList.join(",");
-        let strTypeList = questionList.join(",");
-        let strSelectorList = questionList.join(",");
-
-
-        const body = {
-            "title": title,
-            "description": content,
-            "status": "未開放",
-            "start_date": start,
-            "end_date": end,
-            "outline_id": "2",
-            "question_title": strQuestionList,
-            "not_null": strNotNullList,
-            "type": strTypeList,
-            "question_selector": strSelectorList
-        }
-
-        fetch("http://localhost:8080/log_in", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            "body": JSON.stringify(body),
-            credentials: 'include', 
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        });
+        // console.log(this.tableData);
+        // console.log(this.newOutlineId);
     }
 }
 </script>
@@ -264,7 +286,7 @@ export default {
         <!-- Button -->
         <div class="bottom-btn-box">
             <SmallBtn type="button" :btnText="'取消'" />
-            <SmallBtn type="button" :bgc="'var(--orange-dark)'" :color="'var(--font-light)'" :btnText="'確認'" />
+            <SmallBtn @click="addToDB" type="button" :bgc="'var(--orange-dark)'" :color="'var(--font-light)'" :btnText="'確認'" />
         </div>
     </div>
 </template>
