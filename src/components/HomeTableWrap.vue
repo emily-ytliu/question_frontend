@@ -37,15 +37,6 @@ export default {
         this.hideBtn = false;
       }
     },
-    handleEditClick() {
-      console.log(this.currentRoute);
-      if (this.currentRoute === "/back-home") {
-        this.$router.push("/back-admin/content");
-      }
-      else {
-        this.$router.push("/front-answer");
-      }
-    },
     updateStatus() {
       // 用日期來判斷status
       // 未開放、進行中、已結束 (前端判斷就好，不用存資料庫)
@@ -73,7 +64,8 @@ export default {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      console.log(data);
+      console.log(data.outlineList[row.id]);
 
       for (let i = 0; i < data.outlineList.length; i++) {
         // // 用日期來判斷status
@@ -87,24 +79,12 @@ export default {
           status: this.status,
           startDate: data.outlineList[i].startDate,
           endDate: data.outlineList[i].endDate
-        });
-        
+        }); 
       }
 
-      // 後台HomeTableWrap點擊新增按鈕時，
-      // 把最後一筆id+1，傳到AdminQuestion
-      if (data.outlineList.length === 0) {
-        this.newOutlineId = 1;
-      }
-      else {
-        this.newOutlineId = data.outlineList[data.outlineList.length-1].outlineId+1;
-      }
-      // 加入newOutlineId到Pinia儲存
-      const eventBusStore = useEventBusStore();
-      eventBusStore.setNewOutlineId(this.newOutlineId);
-
-      // console.log(this.newOutlineId);
     })
+
+    
   },
 }
 </script>
@@ -136,21 +116,30 @@ export default {
           field="edit" 
           title="編輯"
           :visible="hideCheckboxEdit()">
-            <vxe-button 
-              icon="vxe-icon-edit" 
-              class="edit-icon" 
-              @click="handleEditClick">
-            </vxe-button>
+          <template #default="{ row }">
+            <RouterLink :to="`/back-admin/content/${row.id}`">
+              <vxe-button 
+                icon="vxe-icon-edit" 
+                class="edit-icon"
+                @click="getQuestionData(row)">
+              </vxe-button>
+            </RouterLink>
+          </template>
         </vxe-column>
         <vxe-column 
           width="80" 
           field="write" 
           title="填寫"
           :visible="hideWrite()">
-          <vxe-button 
-            icon="vxe-icon-edit" 
-            class="edit-icon"
-            @click="handleEditClick"></vxe-button>
+          <template #default="{ row }">
+            <RouterLink :to="`/front-answer/${row.id}`">
+              <vxe-button 
+                icon="vxe-icon-edit" 
+                class="edit-icon"
+                >
+              </vxe-button>
+            </RouterLink>
+          </template>
         </vxe-column>
         <vxe-column 
           field="qTitle" 

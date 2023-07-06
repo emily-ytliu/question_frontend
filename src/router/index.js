@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import("../views/FrontHome.vue")
     },
     {
-      path: '/front-answer',
+      path: '/front-answer/:qId',
       name: 'front-answer',
       component: () => import("../views/FrontAnswer.vue")
     },
@@ -35,22 +35,22 @@ const router = createRouter({
       children: [
         {
           // 子路由: /back-admin/content
-          path: "content",
+          path: "content/:qId?",
           component: () => import("../components/AdminContent.vue"),
         },
         {
           // 子路由: /back-admin/question
-          path: "question",
+          path: "question/:qId?",
           component: () => import("../components/AdminQuestion.vue"),
         },
         {
           // 子路由: /back-admin/feedback
-          path: "feedback",
+          path: "feedback/:qId?",
           component: () => import("../components/AdminFeedback.vue"),
         },
         {
           // 子路由: /back-admin/result
-          path: "result",
+          path: "result/:qId?",
           component: () => import("../components/AdminResult.vue"),
         },
       ]

@@ -16,6 +16,7 @@ export default {
     data() {
         return {
             currentRoute: this.$route.path,
+            qId: this.$route.params.qId,
         }
     },
     methods: {
@@ -32,20 +33,20 @@ export default {
         <nav>
             <ul class="nav-box">
                 <li class="nav-item" 
-                    :class="{'content': currentRoute === '/back-admin/content'}">
-                    <RouterLink to="/back-admin/content">問卷</RouterLink>
+                    :class="{'content': currentRoute === `/back-admin/content/${qId}`}">
+                    <RouterLink :to="`/back-admin/content/${qId}`">問卷</RouterLink>
                 </li>
                 <li class="nav-item" 
-                    :class="{'question': currentRoute === '/back-admin/question'}">
-                    <RouterLink to="/back-admin/question">題目</RouterLink>
+                    :class="{'question': currentRoute === `/back-admin/question/${qId}`}">
+                    <RouterLink :to="`/back-admin/question/${qId}`">題目</RouterLink>
                 </li>
                 <li class="nav-item" 
-                    :class="{'feedback': currentRoute === '/back-admin/feedback'}">
-                    <RouterLink to="/back-admin/feedback">回饋</RouterLink>
+                    :class="{'feedback': currentRoute === `/back-admin/feedback/${qId}`}">
+                    <RouterLink :to="`/back-admin/feedback/${qId}`">回饋</RouterLink>
                 </li>
                 <li class="nav-item" 
-                    :class="{'result': currentRoute === '/back-admin/result'}">
-                    <RouterLink to="/back-admin/result">統計</RouterLink>
+                    :class="{'result': currentRoute === `/back-admin/result/${qId}`}">
+                    <RouterLink :to="`/back-admin/result/${qId}`">統計</RouterLink>
                 </li>
             </ul>
             <div class="btn-box">

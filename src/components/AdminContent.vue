@@ -10,6 +10,7 @@ export default {
             qContentInput: "",
             qStartInput: "",
             qEndInput: "",
+            qId: this.$route.params.qId,
         }
     },
     methods: {
@@ -88,6 +89,12 @@ export default {
                 this.qContentInput = sessionStorage.getItem("qContent");
                 this.qStartInput = sessionStorage.getItem("qStart");
                 this.qEndInput = sessionStorage.getItem("qEnd");
+        }
+        if (qId !== null) {
+            this.qTitleInput = null;
+            this.qContentInput = null;
+            this.qStartInput = null;
+            this.qEndInput = null;
         }
     }
 }

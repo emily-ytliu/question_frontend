@@ -4,7 +4,7 @@ export const useEventBusStore = defineStore('eventBus', {
     state: () => ({
         // 定義需要共享的資料
         tableData: [],
-        newOutlineId: 0,
+        questionData: [],
     }),
     getters: {
 
@@ -15,9 +15,8 @@ export const useEventBusStore = defineStore('eventBus', {
         addToTableData(topData) {
             this.tableData.push(topData);
         },
-        // 後台首頁Table的id傳到AdminQuestion頁面
-        setNewOutlineId(value) {
-            this.newOutlineId = value;
+        setQuestionData(listData) {
+            this.questionData.push(listData);
         },
     }
 })

@@ -119,7 +119,7 @@ export default {
 
             this.addOrupdateBtn = "確定修改";
         },
-        // 儲存到資料庫
+        // 新增問卷儲存到資料庫
         addToDB() {
             let questionList = [];
             let notNullList = [];
@@ -146,6 +146,8 @@ export default {
 
             let title = sessionStorage.getItem("qTitle");
             let content = sessionStorage.getItem("qContent");
+            let start = sessionStorage.getItem("qStart");
+            let end = sessionStorage.getItem("qEnd");
 
             if (title === null || content === null) {
                 return this.$swal("注意！", "問題大綱未填寫", "warning")
@@ -158,8 +160,8 @@ export default {
             const body = {
                 "title": title,
                 "description": content,
-                "start_date": this.start,
-                "end_date": this.end,
+                "start_date": start,
+                "end_date": end,
 
                 "question_title": strQuestionList,
                 "not_null": strNotNullList,
@@ -182,17 +184,24 @@ export default {
                 if (data.message === "新增問卷成功") {
                     console.log(data);
 
+                    sessionStorage.removeItem("qTitle"); 
+                    sessionStorage.removeItem("qContent");
+                    sessionStorage.removeItem("qStart");
+                    sessionStorage.removeItem("qEnd");
+
                     this.$swal(data.message, "可以到總表查看囉！", "success")
                     .then(() => {
                         this.$router.push("/back-home");
                     });  
                 }
             });
+        },
+        // 修改問卷儲存資料庫
+        changeToDB() {
+
         }
     },
     mounted() {   
-        // console.log(this.tableData);
-        // console.log(this.newOutlineId);
     }
 }
 </script>
