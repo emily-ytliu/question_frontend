@@ -95,8 +95,8 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
-                console.log("印出來看看:")
-                console.log(data);
+                // console.log("印出來看看:")
+                // console.log(data);
 
                 if (this.qId !== null && data !== undefined) {
                 const qDataList = data.outline;

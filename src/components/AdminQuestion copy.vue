@@ -29,12 +29,12 @@ export default {
         // 1. Top傳到Table
         tableData() {
             const eventBusStore = useEventBusStore();
-            return eventBusStore.tableData;
+            return this.eventBusStore.tableData;
         },
         // 特定問卷資料
         getQuestionOne() {
             const eventBusStore = useEventBusStore();
-            return eventBusStore.questionData;
+            return this.eventBusStore.questionData;
         }
     },
     methods: {
@@ -59,6 +59,7 @@ export default {
             // 3. 如果有點擊editBtn，
             // 使用row的index更新表格資料
             if (this.updatedRowIndex !== null) {
+                const eventBusStore = useEventBusStore();
                 const originalData = eventBusStore.tableData[this.updatedRowIndex];
                 // 修改資料不更改id
                 this.updatedData = {
@@ -81,6 +82,8 @@ export default {
                     notNull: this.notNull ? "V" : "X",
                     selector: this.selector,
                 }
+                const eventBusStore = useEventBusStore();
+                eventBusStore.addToTableData(this.updatedData);
             }
 
             this.isEditing = true;
@@ -105,7 +108,6 @@ export default {
         },
         // 2. editBtn傳到Top
         handleEditBtnClick(row) {
-            const eventBusStore = useEventBusStore();
             console.log(row)
 
             this.qInput = row.question;
@@ -196,33 +198,6 @@ export default {
                 }
             });
         },
-        // 特定問卷渲染
-        // getOneQuestion() {
-        //     if (this.qId !== null && this.getQuestionOne !== undefined) {
-        //         const qDataList = this.getQuestionOne.question;
-
-        //         let titleAry = qDataList.questionTitle.split(", ");
-        //         let typeAry = qDataList.type.split(", ");
-        //         let notNullAry = qDataList.notNull.split(", ");
-        //         let selectorAry = qDataList.questionSelector.split(", ");
-
-        //         // 清空updatedData
-        //         this.updatedData = []; 
-
-        //         for (let i = 0; i < titleAry.length; i++) {
-        //             this.updatedData.push({
-        //                 id: i+1,
-        //                 question: titleAry[i],
-        //                 type: typeAry[i],
-        //                 notNull: notNullAry[i] ? "V" : "X",
-        //                 selector: selectorAry[i],
-        //             }); 
-        //         }
-
-        //         const eventBusStore = useEventBusStore();
-        //         eventBusStore.addToTableData(this.updatedData);
-        //     }
-        // },
         // fetchGetOne() {
         //     // fetch查詢特定問卷後端
         //     const body = {
@@ -247,6 +222,8 @@ export default {
         //             let typeAry = qDataList.type.split(", ");
         //             let notNullAry = qDataList.notNull.split(", ");
         //             let selectorAry = qDataList.questionSelector.split(", ");
+
+        //             this.updatedData = []; // 清空updatedData
 
         //             for (let i = 0; i < titleAry.length; i++) {
         //                 this.updatedData.push({
@@ -295,7 +272,7 @@ export default {
         this.tableData;
         console.log("mounted:");
         console.log(this.tableData);
-    },
+    }
 }
 </script>
 
