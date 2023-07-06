@@ -6,7 +6,7 @@ export default {
   },
   data() {
       return {
-          currentRoute: this.$route.path,
+          currentRoute: "",
           tableData: [],
           hideBtn: false,
           newOutlineId: 0,
@@ -14,13 +14,13 @@ export default {
           end: "",
       }
   },
+  created() {
+    this.currentRoute = this.$route.path;
+    this.$router.afterEach((to, from) => {
+      this.currentRoute = to.path;
+    });
+  },
   computed: {
-    // updateNewOutlineId() {
-    //   // 加入newOutlineId到Pinia儲存
-    //   const eventBusStore = useEventBusStore();
-    //   eventBusStore.setNewOutlineId(this.newOutlineId);
-    //   return eventBusStore.newOutlineId;
-    // },
   },
   methods: {
     hideCheckboxEdit() {
@@ -37,6 +37,15 @@ export default {
         this.hideBtn = false;
       }
     },
+    handleEditClick() {
+      console.log(this.currentRoute);
+      if (this.currentRoute === "/back-home") {
+        this.$router.push("/back-admin/content");
+      }
+      else {
+        this.$router.push("/front-answer");
+      }
+    },
     updateStatus() {
       // 用日期來判斷status
       // 未開放、進行中、已結束 (前端判斷就好，不用存資料庫)
@@ -50,10 +59,10 @@ export default {
       if (today > this.end) {
         this.status = "已結束";
       }
-      console.log("看status: " + this.status);
     },
   },
   mounted() {
+    this.currentRoute = this.$route.path;
     this.hideBtns();
     // fetch 後端API
     fetch("http://localhost:8080/get_all", {
@@ -104,7 +113,9 @@ export default {
     <div class="home-table-wrap">
       <div class="btn-box" :class="{ hide: hideBtn }">
         <vxe-button icon="vxe-icon-delete" circle></vxe-button>
-        <RouterLink to="/back-admin/content"><vxe-button @click="updateNewOutlineId" icon="vxe-icon-add" circle class="add-btn"></vxe-button></RouterLink>
+        <RouterLink to="/back-admin/content">
+          <vxe-button icon="vxe-icon-add" circle class="add-btn"></vxe-button>
+        </RouterLink>
       </div>
       <vxe-table
         :data="this.tableData"
@@ -125,15 +136,21 @@ export default {
           field="edit" 
           title="編輯"
           :visible="hideCheckboxEdit()">
-          <RouterLink to="/back-admin/content"><vxe-button icon="vxe-icon-edit" class="edit-icon">
-          </vxe-button></RouterLink>
+            <vxe-button 
+              icon="vxe-icon-edit" 
+              class="edit-icon" 
+              @click="handleEditClick">
+            </vxe-button>
         </vxe-column>
         <vxe-column 
           width="80" 
           field="write" 
           title="填寫"
           :visible="hideWrite()">
-          <vxe-button icon="vxe-icon-edit" class="edit-icon"></vxe-button>
+          <vxe-button 
+            icon="vxe-icon-edit" 
+            class="edit-icon"
+            @click="handleEditClick"></vxe-button>
         </vxe-column>
         <vxe-column 
           field="qTitle" 

@@ -12,30 +12,30 @@ export default {
             searchData: null,
         }
     },
-    // methods: {
-    //     search() {
-    //         const searchBody = {
-    //             "title": this.qTitleInput,
-    //             "start_date": this.qStartInput,
-    //             "end_date": this.qEndInput
-    //         }
+    methods: {
+        search() {
+            const searchBody = {
+                "title": this.qTitleInput,
+                "start_date": this.qStartInput,
+                "end_date": this.qEndInput
+            }
 
-    //         fetch("http://localhost:8080/search", {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             "body": JSON.stringify(searchBody),
-    //             credentials: 'include', 
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log(data)
-    //             this.searchData = data;
-    //         })
-    //     }
+            fetch("http://localhost:8080/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                "body": JSON.stringify(searchBody),
+                credentials: 'include', 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                this.searchData = data;
+            })
+        }
 
-    // },
+    },
     mounted() {
         // 如果結束時間<開始時間
         if (this.qEndInput < this.qStartInput) {
