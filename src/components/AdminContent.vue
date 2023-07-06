@@ -1,4 +1,5 @@
 <script>
+import { useEventBusStore } from '../stores/eventBus'
 import SmallBtn from './SmallBtn.vue';
 export default {
     components: {
@@ -12,6 +13,8 @@ export default {
             qEndInput: "",
             qId: this.$route.params.qId,
         }
+    },
+    computed: {
     },
     methods: {
         // 預設開始日期
@@ -76,10 +79,39 @@ export default {
             sessionStorage.setItem("qEnd", this.qEndInput);
 
             this.$router.push("/back-admin/question")
-        }
+        },
+        fetchGetOne() {
+            // fetch查詢特定問卷後端
+            const body = {
+                "outline_id": this.qId,
+            }
+            fetch("http://localhost:8080/get_one", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                "body": JSON.stringify(body),
+                credentials: 'include', 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("印出來看看:")
+                console.log(data);
+
+                if (this.qId !== null && data !== undefined) {
+                const qDataList = data.outline;
+                this.qTitleInput = qDataList.title;
+                this.qContentInput = qDataList.description;
+                this.qStartInput = qDataList.startDate;
+                this.qEndInput = qDataList.endDate;  
+            } 
+            })
+        },
     },
     mounted() {
         this.defaultDate();
+
+        this.fetchGetOne();
 
         if (sessionStorage.getItem("qTitle") 
             && sessionStorage.getItem("qContent")
@@ -90,13 +122,7 @@ export default {
                 this.qStartInput = sessionStorage.getItem("qStart");
                 this.qEndInput = sessionStorage.getItem("qEnd");
         }
-        if (qId !== null) {
-            this.qTitleInput = null;
-            this.qContentInput = null;
-            this.qStartInput = null;
-            this.qEndInput = null;
-        }
-    }
+    },
 }
 </script>
 

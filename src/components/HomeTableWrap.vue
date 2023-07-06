@@ -65,7 +65,6 @@ export default {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      console.log(data.outlineList[row.id]);
 
       for (let i = 0; i < data.outlineList.length; i++) {
         // // 用日期來判斷status
@@ -120,8 +119,7 @@ export default {
             <RouterLink :to="`/back-admin/content/${row.id}`">
               <vxe-button 
                 icon="vxe-icon-edit" 
-                class="edit-icon"
-                @click="getQuestionData(row)">
+                class="edit-icon">
               </vxe-button>
             </RouterLink>
           </template>

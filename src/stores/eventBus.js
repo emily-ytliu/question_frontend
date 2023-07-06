@@ -16,7 +16,7 @@ export const useEventBusStore = defineStore('eventBus', {
             this.tableData.push(topData);
         },
         setQuestionData(listData) {
-            this.questionData.push(listData);
+            this.questionData = listData;
         },
     }
 })

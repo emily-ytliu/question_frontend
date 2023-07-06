@@ -1,4 +1,5 @@
 <script>
+import { useEventBusStore } from '../stores/eventBus'
 import { RouterLink, RouterView } from 'vue-router'
 import AdminContent from "../components/AdminContent.vue"
 import AdminQuestion from "../components/AdminQuestion.vue"
