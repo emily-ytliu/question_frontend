@@ -138,7 +138,8 @@ export default {
                 questionList.push(question);
                 notNullList.push(notNull);
                 typeList.push(type);
-                selectorList.push(selector.join(";"));
+                selectorList.push(selector); 
+                // selector = selector.replace(/,/g, ";");  // 逗號替換成分號  
             }
 
             let strQuestionList = questionList.join(", ");
@@ -191,54 +192,64 @@ export default {
                     sessionStorage.removeItem("qStart");
                     sessionStorage.removeItem("qEnd");
 
+                    this.updatedData = []; // 清空updatedData
+                    const eventBusStore = useEventBusStore();
+                    eventBusStore.$reset();  // 手動更新
+
                     this.$swal(data.message, "可以到總表查看囉！", "success")
                     .then(() => {
-                        this.$router.push("/back-home");
-                    });  
+                        location.reload();
+                    })
+                    .then(() => {
+                        // this.$router.push("/back-home");
+                        window.location.href = "/back-home";
+                    });
                 }
             });
         },
-        fetchGetOne() {
-            // fetch查詢特定問卷後端
-            const body = {
-                "outline_id": this.qId,
-            }
-            fetch("http://localhost:8080/get_one", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                "body": JSON.stringify(body),
-                credentials: 'include', 
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("印看看:")
-                console.log(data);
+        // fetchGetOne() {
+        //     // fetch查詢特定問卷後端
+        //     const body = {
+        //         "outline_id": this.qId,
+        //     }
+        //     fetch("http://localhost:8080/get_one", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         "body": JSON.stringify(body),
+        //         credentials: 'include', 
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log("印看看:")
+        //         console.log(data);
 
-                if (this.qId !== null && data !== undefined) {
-                    const qDataList = data.question;
-                    let titleAry = qDataList.questionTitle.split(", ");
-                    let typeAry = qDataList.type.split(", ");
-                    let notNullAry = qDataList.notNull.split(", ");
-                    let selectorAry = qDataList.questionSelector.split(", ");
+        //         if (this.qId !== null && data !== undefined) {
+        //             const qDataList = data.question;
+        //             let titleAry = qDataList.questionTitle.split(", ");
+        //             let typeAry = qDataList.type.split(", ");
+        //             let notNullAry = qDataList.notNull.split(", ");
+        //             let selectorAry = qDataList.questionSelector.split(", ");
 
-                    this.updatedData = []; // 清空updatedData
+        //             this.updatedData = []; // 清空updatedData
+        //             const eventBusStore = useEventBusStore();
+        //             eventBusStore.$reset();  // 手動更新
 
-                    for (let i = 0; i < titleAry.length; i++) {
-                        this.updatedData.push({
-                            id: i+1,
-                            question: titleAry[i],
-                            type: typeAry[i],
-                            notNull: notNullAry[i] ? "V" : "X",
-                            selector: selectorAry[i],
-                        }); 
-                    }
-                } 
-                const eventBusStore = useEventBusStore();
-                eventBusStore.addToTableData(this.updatedData);
-            })
-        },
+        //             for (let i = 0; i < titleAry.length; i++) {
+        //                 this.updatedData.push({
+        //                     id: i+1,
+        //                     question: titleAry[i],
+        //                     type: typeAry[i],
+        //                     notNull: notNullAry[i] ? "V" : "X",
+        //                     selector: selectorAry[i],
+        //                 }); 
+        //             }
+        //         } 
+        //         const eventBusStore = useEventBusStore();
+        //         eventBusStore.addToTableData(this.updatedData);
+        //     })
+        // },
         // 修改問卷儲存資料庫
         changeToDB() {
             // fetch修改問卷後端
@@ -270,7 +281,7 @@ export default {
     mounted() {
         const eventBusStore = useEventBusStore();
         eventBusStore.tableData;
-        this.fetchGetOne();
+        // this.fetchGetOne();
     }
 }
 </script>
