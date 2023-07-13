@@ -99,12 +99,12 @@ export default {
                 // console.log(data);
 
                 if (this.qId !== null && data !== undefined) {
-                const qDataList = data.outline;
-                this.qTitleInput = qDataList.title;
-                this.qContentInput = qDataList.description;
-                this.qStartInput = qDataList.startDate;
-                this.qEndInput = qDataList.endDate;  
-            } 
+                    const qDataList = data.outline;
+                    this.qTitleInput = qDataList.title;
+                    this.qContentInput = qDataList.description;
+                    this.qStartInput = qDataList.startDate;
+                    this.qEndInput = qDataList.endDate;  
+                } 
             })
         },
     },

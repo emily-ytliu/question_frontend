@@ -24,6 +24,12 @@ export default {
             updatedData: [],
         }
     },
+    // watch: {
+    //     qId() {
+    //         const newQId = this.qId;
+    //         this.fetchGetOne();
+    //     },
+    // },
     computed: {
         // Table
         // 1. Top傳到Table
@@ -281,6 +287,9 @@ export default {
     mounted() {
         const eventBusStore = useEventBusStore();
         eventBusStore.tableData;
+        console.log("表:");
+        console.log(eventBusStore.tableData);
+
         // this.fetchGetOne();
     }
 }
